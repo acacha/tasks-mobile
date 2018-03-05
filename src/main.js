@@ -5,9 +5,12 @@ import Vuetify from 'vuetify'
 import 'vuetify/dist/vuetify.css'
 import VueCordova from 'vue-cordova'
 import VueHead from 'vue-head'
+import store from './store'
 
 import App from './App'
 import router from './router'
+import * as mutations from './store/mutation-types'
+import axios from 'axios'
 
 Vue.use(Vuetify)
 Vue.config.productionTip = false
@@ -22,10 +25,20 @@ if (window.location.protocol === 'file:' || window.location.port === '3000') {
   document.body.appendChild(cordovaScript)
 }
 
+if (window.localStorage) {
+  let token = window.localStorage.getItem('token') || 'null'
+  if (token) {
+    store.commit(mutations.TOKEN, token)
+    store.commit(mutations.LOGGED, true)
+    axios.defaults.headers.common['authorization'] = `Bearer ${token}`
+  }
+}
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
   router,
+  store,
   template: '<App/>',
   components: { App },
   head: {
