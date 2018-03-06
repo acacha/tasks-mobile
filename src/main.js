@@ -34,6 +34,8 @@ if (window.localStorage) {
   }
 }
 
+Vue.prototype.mystore = store
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
